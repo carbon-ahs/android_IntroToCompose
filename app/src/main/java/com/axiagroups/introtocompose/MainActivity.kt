@@ -19,10 +19,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,7 +58,7 @@ fun Myapp() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "$100",
+                text = "$${moneyCounter.value}",
                 style = TextStyle(
                     color = Color.White,
                     fontSize = 39.sp,
@@ -68,30 +66,36 @@ fun Myapp() {
                 )
             )
             Spacer(modifier = Modifier.height(130.dp))
-            CreateCircle(moneyCounter.value)
+            CreateCircle(moneyCounter.value) { newValue ->
+                moneyCounter.value = newValue
+            }
         }
 
     }
 }
 
-@Preview
+//@Preview
 @Composable
-fun CreateCircle(moneyCounter: Int = 0) {
+fun CreateCircle(
+    moneyCounter: Int = 0,
+    updateMoneyCounter: (Int) -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(3.dp)
             .size(145.dp)
             .clickable {
-//                moneyCounter += 1
+                updateMoneyCounter(moneyCounter + 100)
             },
         shape = CircleShape,
         elevation = cardElevation(4.dp),
     ) {
-        Box(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = "Tap $moneyCounter")
+            Text(text = "Tap")
         }
 
     }
